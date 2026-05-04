@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강우주 — 서비스 운영</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+  :root {
+    --accent: #005eea;
+    --accent-light: #e8f0fe;
+    --accent-mid: #b3d1ff;
+    --text: #2d2d2d;
+    --text-sub: #555;
+    --text-muted: #888;
+    --bg: #fff;
+    --bg-alt: #f6f8fb;
+    --bg-dark: #0a1628;
+    --border: #e2e6ed;
+    --radius: 14px;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    color: var(--text); background: var(--bg);
+    line-height: 1.7; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--bg-dark); position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,94,234,.25) 0%, transparent 70%);
+    top: -100px; right: -100px; border-radius: 50%;
+    animation: float 8s ease-in-out infinite alternate;
+  }
+  .hero::after {
+    content: ''; position: absolute; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,94,234,.12) 0%, transparent 70%);
+    bottom: -80px; left: -60px; border-radius: 50%;
+    animation: float 10s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes float { to { transform: translate(40px, 30px) scale(1.1); } }
+  .hero-inner {
+    position: relative; z-index: 1; max-width: 720px; padding: 40px 24px; text-align: center;
+  }
+  .hero-name {
+    font-size: clamp(2.8rem, 6vw, 4.2rem); font-weight: 800; color: #fff;
+    letter-spacing: -1px; margin-bottom: 8px;
+  }
+  .hero-role {
+    font-size: 1.1rem; font-weight: 600; color: var(--accent);
+    letter-spacing: 4px; text-transform: uppercase; margin-bottom: 28px;
+  }
+  .hero-desc { font-size: 1.05rem; color: rgba(255,255,255,.72); line-height: 1.9; }
+  .hero-desc .em { color: var(--accent); font-weight: 700; }
+  .hero-stats {
+    margin-top: 48px; display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+  }
+  .hero-stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .hero-stat-label { font-size: .82rem; color: rgba(255,255,255,.5); margin-top: 2px; }
+  .scroll-hint {
+    position: absolute; bottom: 32px; left: 50%;
+    transform: translateX(-50%); z-index: 2; animation: bounce 2s infinite;
+  }
+  .scroll-hint span {
+    display: block; width: 20px; height: 20px;
+    border-right: 2px solid rgba(255,255,255,.3);
+    border-bottom: 2px solid rgba(255,255,255,.3); transform: rotate(45deg);
+  }
+  @keyframes bounce { 0%,100%{ transform: translateX(-50%) translateY(0); } 50%{ transform: translateX(-50%) translateY(10px); } }
+
+  /* ========== SHARED ========== */
+  section { padding: 80px 24px; }
+  .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -.5px; }
+  .section-title .accent { color: var(--accent); }
+  .section-sub { font-size: .92rem; color: var(--text-muted); margin-bottom: 48px; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* ========== SERVICE CONTEXT ========== */
+  .context-section { background: var(--bg); padding-bottom: 0; }
+  .context-box {
+    background: var(--bg-alt); border-radius: var(--radius); padding: 28px 28px 24px;
+    border-left: 4px solid var(--accent);
+  }
+  .context-box h4 {
+    font-size: .82rem; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px;
+  }
+  .context-box ul { list-style: none; padding: 0; }
+  .context-box ul li {
+    font-size: .9rem; color: var(--text-sub); line-height: 1.8;
+    padding-left: 16px; position: relative; margin-bottom: 6px;
+  }
+  .context-box ul li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+  }
+
+  /* ========== PROJECTS ========== */
+  .projects-section { background: var(--bg-alt); }
+  .project-cards-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+  }
+  .project-thumb {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 24px; cursor: pointer;
+    transition: box-shadow .3s, border-color .3s, transform .2s;
+  }
+  .project-thumb:hover {
+    border-color: var(--accent); box-shadow: 0 6px 24px rgba(0,94,234,.1); transform: translateY(-3px);
+  }
+  .project-thumb-num {
+    font-size: .72rem; font-weight: 700; color: var(--accent);
+    background: var(--accent-light); padding: 3px 10px; border-radius: 20px;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .project-thumb-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; line-height: 1.5; }
+  .project-thumb-result { font-size: .88rem; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+  .project-thumb-summary { font-size: .83rem; color: var(--text-muted); line-height: 1.6; }
+  .project-thumb-cta {
+    margin-top: 16px; font-size: .46rem; font-weight: 700; color: var(--text-muted);
+    display: flex; align-items: center; gap: 3px;
+  }
+  .project-thumb-cta svg { width: 9px; height: 9px; transition: transform .2s; }
+  .project-thumb:hover .project-thumb-cta svg { transform: translateX(3px); }
+
+  /* --- Overlay --- */
+  .project-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,22,40,.55); backdrop-filter: blur(6px);
+    z-index: 100; align-items: center; justify-content: center;
+    padding: 24px; animation: fadeIn .25s ease;
+  }
+  .project-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .project-detail {
+    background: #fff; border-radius: 16px; max-width: 720px; width: 100%;
+    max-height: 88vh; overflow-y: auto; padding: 36px 32px; position: relative;
+    animation: slideUp .3s ease; box-shadow: 0 24px 80px rgba(0,0,0,.18);
+  }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .project-detail-close {
+    position: sticky; top: 0; float: right;
+    width: 36px; height: 36px; border: none; background: var(--bg-alt);
+    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: var(--text-muted); transition: background .2s; z-index: 2;
+  }
+  .project-detail-close:hover { background: var(--border); }
+  .project-detail-header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .project-detail-title { font-size: 1.2rem; font-weight: 700; }
+  .project-detail-meta { font-size: .82rem; color: var(--text-muted); margin-bottom: 28px; }
+
+  /* Detail rows — vertical stack, label then content */
+  .detail-row {
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+  }
+  .detail-row:first-child { border-top: none; }
+  .detail-label {
+    font-size: .7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--accent); margin-bottom: 6px;
+  }
+  .detail-content { font-size: .82rem; color: var(--text-sub); line-height: 1.75; }
+  .detail-content ul { list-style: none; padding: 0; margin: 0; }
+  .detail-content ul li { position: relative; padding-left: 14px; margin-bottom: 3px; }
+  .detail-content ul li::before {
+    content: ''; position: absolute; left: 0; top: 10px;
+    width: 4px; height: 4px; background: var(--accent); border-radius: 50%;
+  }
+  .detail-content strong { color: var(--text); }
+  .detail-content .sub-note {
+    font-size: .76rem; color: var(--text-muted); margin-top: 2px; display: block;
+  }
+
+  /* — 결과 (headline): biggest */
+  .detail-row.result-row {
+    background: var(--accent-light); border-radius: 10px; border-top: none;
+    padding: 18px 16px; margin-bottom: 6px;
+  }
+  .result-row .detail-label { font-size: .74rem; color: var(--accent); }
+  .result-row .detail-content { font-size: 1rem; font-weight: 500; line-height: 1.85; }
+  .result-row .detail-content strong { font-weight: 700; color: var(--accent); }
+  .result-row .detail-content ul li::before { width: 5px; height: 5px; }
+
+  /* — 배경/문제/실행 (body): indented, medium */
+  .detail-row.body-row {
+    padding: 10px 0 10px 12px; border-top: none;
+    border-left: 2px solid var(--border); margin-left: 4px;
+  }
+  .body-row .detail-label { font-size: .66rem; color: var(--text-muted); margin-bottom: 4px; }
+  .body-row .detail-content { font-size: .8rem; line-height: 1.7; }
+
+  /* — 결과 상세 (repeat, smaller than headline) */
+  .detail-row.result-sub-row {
+    background: var(--accent-light); border-radius: 8px; border-top: none;
+    padding: 14px 14px; margin-top: 6px; opacity: .88;
+  }
+  .result-sub-row .detail-label { font-size: .66rem; color: var(--accent); }
+  .result-sub-row .detail-content { font-size: .84rem; font-weight: 500; line-height: 1.75; }
+  .result-sub-row .detail-content strong { font-weight: 700; color: var(--accent); }
+
+  /* — 레슨런: smallest, single-line feel */
+  .detail-row.lesson-row {
+    background: var(--bg-alt); border-radius: 8px; border-top: none;
+    padding: 12px 14px; margin-top: 8px;
+  }
+  .lesson-row .detail-label { color: var(--text-muted); font-size: .62rem; margin-bottom: 3px; }
+  .lesson-row .detail-content { font-size: .74rem; color: var(--text-muted); line-height: 1.65; }
+  .lesson-row .detail-content ul li { margin-bottom: 2px; }
+  .lesson-row .detail-content ul li::before { background: var(--text-muted); width: 3px; height: 3px; }
+
+  /* ========== CAREER ========== */
+  .career-section { background: var(--bg); }
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--border);
+  }
+  .timeline-item { position: relative; margin-bottom: 40px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot {
+    position: absolute; left: -32px; top: 6px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--accent); border: 3px solid var(--accent-light);
+  }
+  .timeline-item:not(:first-child) .timeline-dot { background: var(--border); border-color: #fff; }
+  .timeline-company { font-size: 1.1rem; font-weight: 700; }
+  .timeline-role { font-size: .88rem; color: var(--accent); font-weight: 600; margin: 2px 0; }
+  .timeline-period { font-size: .82rem; color: var(--text-muted); margin-bottom: 8px; }
+  .timeline-desc { font-size: .9rem; color: var(--text-sub); line-height: 1.75; }
+  .timeline-desc ul { list-style: none; padding: 0; }
+  .timeline-desc ul li { margin-bottom: 4px; }
+  .timeline-desc ul li::before { content: '—'; color: var(--accent); margin-right: 6px; font-weight: 700; }
+
+  /* ========== COMMUNICATION — vertical cards ========== */
+  .comm-section { background: var(--bg-alt); }
+  .comm-cards { display: flex; flex-direction: column; gap: 16px; }
+  .comm-card {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px 24px 20px; transition: border-color .3s;
+  }
+  .comm-card:hover { border-color: var(--accent); }
+  .comm-card-dept {
+    font-size: .72rem; font-weight: 700; color: var(--accent);
+    background: var(--accent-light); padding: 3px 10px; border-radius: 20px;
+    display: inline-block; margin-bottom: 10px; letter-spacing: .5px;
+  }
+  .comm-card-action {
+    font-size: .9rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 8px;
+  }
+  .comm-card-result {
+    font-size: .85rem; color: var(--accent); font-weight: 600; line-height: 1.6;
+    padding-left: 16px; position: relative;
+  }
+  .comm-card-result::before {
+    content: '→'; position: absolute; left: 0; font-weight: 800;
+  }
+
+  /* ========== SKILLS ========== */
+  .skills-section { background: var(--bg); }
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+  }
+  .skill-card {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 24px; transition: border-color .3s, transform .2s;
+  }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .skill-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .skill-icon {
+    width: 28px; height: 28px; background: var(--accent-light); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .78rem; font-weight: 800; color: var(--accent); flex-shrink: 0;
+  }
+  .skill-desc { font-size: .85rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 14px; }
+  .skill-works { display: flex; flex-direction: column; gap: 6px; }
+  .skill-work-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .8rem; font-weight: 600; color: var(--accent);
+    text-decoration: none; padding: 6px 12px;
+    background: var(--accent-light); border-radius: 8px;
+    transition: background .2s, transform .15s;
+  }
+  .skill-work-link:hover { background: var(--accent-mid); transform: translateX(2px); }
+  .skill-work-link svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .skill-no-work { font-size: .78rem; color: var(--text-muted); font-style: italic; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    text-align: center; padding: 40px 24px; font-size: .8rem; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ========== ANIMATIONS ========== */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 640px) {
+    section { padding: 56px 16px; }
+    .hero-stats { gap: 24px; }
+    .project-detail { padding: 24px 18px; }
+    .context-box { padding: 22px 18px 18px; }
+    .comm-card { padding: 20px 18px 16px; }
+  }
+
+  .project-detail::-webkit-scrollbar { width: 5px; }
+  .project-detail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-role">서비스 운영</div>
+    <h1 class="hero-name">강우주</h1>
+    <p class="hero-desc">
+      사용자 여정을 세분화하고 온보딩을 설계하여<br>
+      <span class="em">서비스 진입–안정화까지 고객을 책임지고 리드합니다.</span>
+    </p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">61%</div><div class="hero-stat-label">초기 이탈 감소</div></div>
+      <div><div class="hero-stat-num">47%</div><div class="hero-stat-label">리드타임 단축</div></div>
+      <div><div class="hero-stat-num">2년 4개월</div><div class="hero-stat-label">서비스 운영 경력</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- SERVICE CONTEXT (moved above projects) -->
+<section class="context-section">
+  <div class="container">
+    <div class="context-box fade-up">
+      <h4>서비스 Context</h4>
+      <ul>
+        <li>강의 시청 + 과제 제출 + 실시간 멘토링이 결합된 온라인 교육 서비스</li>
+        <li>연 6회 정기개강 (기수제 운영), 1기수 당 20개 클래스 동시 도입</li>
+        <li>정기개강 1회 당 수강생 약 250명의 참여율 관리, 강사 80명 · 운영 어시스턴트 20명 인력 운영</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-title"><span class="accent">주요</span> 프로젝트</p>
+      <p class="section-sub">카드를 클릭하면 상세 내용을 확인할 수 있습니다.</p>
+    </div>
+    <div class="project-cards-grid fade-up" id="projectGrid"></div>
+  </div>
+</section>
+
+<div class="project-overlay" id="projectOverlay">
+  <div class="project-detail" id="projectDetail">
+    <button class="project-detail-close" id="detailClose">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- CAREER -->
+<section class="career-section">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-title"><span class="accent">경력</span> 사항</p>
+      <p class="section-sub">고객 접점에서 서비스를 직접 운영하고 개선해왔습니다.</p>
+    </div>
+    <div class="timeline fade-up">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-company">블루타이거</div>
+        <div class="timeline-role">운영팀 · 서비스 운영 &nbsp;|&nbsp; 온라인 교육 플랫폼</div>
+        <div class="timeline-period">2022.06 – 2024.10 (2년 4개월)</div>
+        <div class="timeline-desc"><ul>
+          <li>고객 여정 분석 → 온보딩 설계 → 가이드 제작 → 성과 검증까지, <strong>고객 여정 관리의 전반을 단독 수행</strong></li>
+          <li><strong>다중 이해관계자 직접 커뮤니케이션</strong> : 사용자(연 250명/회) + 파트너(연 80명) + 외주 인력 동시 관리</li>
+        </ul></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-company">인천도시공사</div>
+        <div class="timeline-role">지역협력팀 · 인턴 &nbsp;|&nbsp; 도시재생지원처</div>
+        <div class="timeline-period">2021.06 – 2021.12 (6개월)</div>
+        <div class="timeline-desc"><ul>
+          <li>공공기관 프로젝트 진행 지원 : 산하 15개 센터 담당자와 커뮤니케이션</li>
+          <li>인천도시재생축제 운영 서포트 : 각 센터의 축제 준비 현황 파악 및 공유</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNICATION (moved below career, vertical layout with dept titles) -->
+<section class="comm-section">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-title"><span class="accent">커뮤니케이션</span> 역량</p>
+      <p class="section-sub">팀 간 정보를 연결하고, 데이터 기반으로 제안합니다.</p>
+    </div>
+    <div class="comm-cards fade-up" id="commCards"></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-title"><span class="accent">스킬</span> & 도구</p>
+      <p class="section-sub">업무에 직접 활용하고 있는 도구와 역량입니다.</p>
+    </div>
+    <div class="skills-grid fade-up" id="skillsGrid"></div>
+  </div>
+</section>
+
+<footer><p>© 2026 강우주 · 서비스 운영</p></footer>
+
+<script>
+/* ===========================================================
+   ✏️ 데이터 편집 영역
+   =========================================================== */
+
+const PROJECTS = [
+  {
+    num: "01",
+    title: "단계별 사용자 온보딩 체계 설계 및 운영",
+    meta: "2023.10 – 2023.11 · 기여도 100%",
+    thumbResult: "초기 이탈 61% 감소 · 환불율 21% 개선",
+    thumbSummary: "고객 여정에 맞춘 단계별 온보딩 체계를 설계하여 서비스 초기 안정화를 달성",
+    details: [
+      { label: "배경", type: "body", items: [
+        "서비스 <strong>시작 후 2주 내 이탈 비율 18%</strong>",
+        "이탈자 중 79%가 비활성 유저 전환 또는 환불(수강 취소) 결정 → <strong>매출 손실로 직결</strong>"
+      ]},
+      { label: "문제", type: "body", items: [
+        "인사이트 도출 : 이용자의 흐름과 무관한 일회성 안내 → <strong>고객이 서비스를 충분히 이해하지 못한 채 이용 시작 → 이탈 초래</strong>",
+        "고객 문의 분석 : 서비스 시작 후 2주 간 유입 문의 중 63%가 <strong>'서비스 이용 방법'</strong> 관련",
+        "고객 경험 분석 : 이용 안내가 시작 14일 전 일회성 제공 → 실제 이용 시점에 정보 부재"
+      ]},
+      { label: "실행", type: "body", items: [
+        "고객의 실제 이용 흐름에 맞춘 <strong>단계별 온보딩 체계 수립</strong>",
+        "<span class='sub-note'>D-14 시작 안내 → D-5 접속 유도 → D-2 참여 유도 → D-1 리마인드 → 초기 2주 타이밍별 푸시</span>",
+        "단계별 가이드 컨텐츠 (가이드, 교육 자료) 직접 제작 → 고객 이해도 제고"
+      ]},
+      { label: "결과 상세", type: "result-sub", items: [
+        "서비스 초기 구간 이탈 비율 <strong>61% 감소</strong> (18% → 7%)",
+        "초기 환불율 <strong>21% 개선</strong> (15% → 12%)"
+      ]},
+      { label: "레슨런", type: "lesson", items: [
+        "사전에 고객 온보딩을 꼼꼼히 설계하는 것이 고객 만족의 핵심임을 체득",
+        "보완점 : 이탈율 현황 자동 리포트 + 이탈 위험 고객 관리로 초기 이용 구간 안정화 예정"
+      ]}
+    ]
+  },
+  {
+    num: "02",
+    title: "강사 온보딩 프로세스 표준화",
+    meta: "2024.08 · 기여도 80%",
+    thumbResult: "완료율 28%p 개선 · 리드타임 47% 단축",
+    thumbSummary: "공통 교육 체계를 표준화하여 규모 확장에도 운영 효율을 유지",
+    details: [
+      { label: "배경", type: "body", items: [
+        "수강생(고객)·강사(파트너) 규모 1.5배 증가 → 업무 급증 예상",
+        "<strong>운영 불안정으로 인한 초기 환불 리스크</strong> → 프로세스 점검 및 개선 필요"
+      ]},
+      { label: "문제", type: "body", items: [
+        "업무 세부 분석 : 공통 안내사항을 모든 강사에게 개별/반복 교육 → <strong>강사 교육 체계 부재 → 해결해야 할 문제로 진단</strong>",
+        "현재 운영 구조 분석 : '강사 온보딩' 업무의 기한 내 완료율 25%, 지연 심각"
+      ]},
+      { label: "실행", type: "body", items: [
+        "<strong>강사용 표준 워크시트 제작</strong> : 가이드+체크리스트 통합, 1개 그룹 시범 운영 후 전체 확산",
+        "1:1 교육 미팅 15회 → 단체 세션 6회로 축소 : 사전 질문 폼으로 가이드 사전 숙지"
+      ]},
+      { label: "결과 상세", type: "result-sub", items: [
+        "서비스 런칭 준비 업무 완료율 <strong>28%p 개선</strong> (55% → 83%)",
+        "강사 온보딩 리드타임 <strong>47% 단축</strong>"
+      ]},
+      { label: "레슨런", type: "lesson", items: [
+        "<strong>공통 업무를 체계화</strong>하면 규모 확장에도 운영 효율을 유지할 수 있음을 체득",
+        "보완점 : 교육 자료에 대한 사용자 만족도/이해도 데이터를 수집·반영하여 지속 개선 예정"
+      ]}
+    ]
+  },
+  {
+    num: "03",
+    title: "서비스 개선 후 고객 문의 사전 대응",
+    meta: "2024.09 · 기여도 100%",
+    thumbResult: "기본 문의 선제 차단 · 3주차 이후 안정화",
+    thumbSummary: "시청 방식 전면 전환에 맞춰 가이드를 선제 배포하여 문의 폭주를 방지",
+    details: [
+      { label: "배경", type: "body", items: [
+        "강의 영상 시청 방식 전면 전환 : 줌 단체 시청 → 온라인 강의실 개별/자율 시청",
+        "<span class='sub-note'>수강 플로우 · 영상 이용 규정 · 학습 프로그램 등, 이용 방식의 전 영역이 변경됨</span>"
+      ]},
+      { label: "문제", type: "body", items: [
+        "기존 이용자 혼란 예상 → <strong>서비스 진입 장벽 및 다발성 문의 발생 우려</strong>",
+        "사후 대응형 안내 구조로는 전환 시점 문의를 감당하기 어려움"
+      ]},
+      { label: "실행", type: "body", items: [
+        "수강 타입별(A/B) 이용 가이드 사전 제작 → 카카오톡 채널로 사전 배포",
+        "사후 유입 문의는 유형/빈도 기반 FAQ 실시간 업데이트 (동일 유형 3건 이상 시 즉시 반영)"
+      ]},
+      { label: "결과 상세", type: "result-sub", items: [
+        "사용자 어려움 사전 예측·대응 → 기본 문의 <strong>선제 차단</strong>",
+        "<strong>3주차 이후 운영 안정화</strong> 달성"
+      ]},
+      { label: "레슨런", type: "lesson", items: [
+        "운영 안정화의 첫 단추는 사용자가 겪을 어려움을 사전 예측하고 선제 대응하는 것임을 체득"
+      ]}
+    ]
+  }
+];
+
+// ── 커뮤니케이션 역량 (유관부서 타이틀 추가, 수직 나열) ──
+const COMMS = [
+  {
+    dept: "기획팀",
+    action: "VOC 데이터 분석 및 공유",
+    result: "기획팀에 콘텐츠 관련 개선점 제안"
+  },
+  {
+    dept: "영업팀",
+    action: "서비스 우수 이용 사례를 콘텐츠로 제작",
+    result: "영업팀이 신규 상담 시 세일즈 포인트로 활용"
+  },
+  {
+    dept: "전사",
+    action: "고객 이용률 대시보드 제작, 전사에 공유",
+    result: "서비스 활용도 제고를 위한 안건 제시"
+  },
+  {
+    dept: "CS / 운영",
+    action: "사후 유입 문의를 유형/빈도 기반으로 분류",
+    result: "FAQ 실시간 업데이트 (동일 유형 3건 이상 시 즉시 반영)"
+  }
+];
+
+/*
+  ✏️ 스킬별 작업물 관리
+  works: [{ title: "작업물명", url: "https://..." }]
+*/
+const SKILLS = [
+  {
+    icon: "N", name: "Notion",
+    desc: "고객 대상 서비스 이용 가이드 · 온보딩 가이드 · 운영 업무 매뉴얼 제작",
+    works: []
+  },
+  {
+    icon: "AI", name: "Claude",
+    desc: "운영 리포트 자동화, 고객 이슈 대응 자동화 가능 (Slack, Apps Script, Notion 연동)",
+    works: []
+  },
+  {
+    icon: "G", name: "Google Sheets / SQL",
+    desc: "고객 활용 데이터 수집·분류·모니터링, 행동 데이터 추출",
+    works: []
+  },
+  {
+    icon: "Co", name: "협업 도구",
+    desc: "Notion, Google Workspace, Zoom, Slack 등 다양한 협업 도구 이용·운영 경험",
+    works: []
+  }
+];
+
+
+/* ===========================================================
+   렌더링 — 수정 불필요
+   =========================================================== */
+const arrowSVG = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>`;
+const linkSVG = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 9.5l3-3M7 4.5H4.5a2 2 0 000 4H6m4 0h1.5a2 2 0 000-4H10"/></svg>`;
+
+// Projects
+const grid = document.getElementById('projectGrid');
+PROJECTS.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'project-thumb';
+  card.innerHTML = `
+    <span class="project-thumb-num">${p.num}</span>
+    <div class="project-thumb-title">${p.title}</div>
+    <div class="project-thumb-result">${p.thumbResult}</div>
+    <div class="project-thumb-summary">${p.thumbSummary}</div>
+    <div class="project-thumb-cta">자세히 보기 ${arrowSVG}</div>`;
+  card.addEventListener('click', () => openProject(i));
+  grid.appendChild(card);
+});
+
+const overlay = document.getElementById('projectOverlay');
+const detailEl = document.getElementById('detailContent');
+const detailPanel = document.getElementById('projectDetail');
+
+function openProject(i) {
+  const p = PROJECTS[i];
+  let html = `
+    <div class="project-detail-header">
+      <span class="project-thumb-num">${p.num}</span>
+      <span class="project-detail-title">${p.title}</span>
+    </div>
+    <div class="project-detail-meta">${p.meta}</div>`;
+  p.details.forEach(d => {
+    const typeMap = {
+      'result': 'detail-row result-row',
+      'body': 'detail-row body-row',
+      'result-sub': 'detail-row result-sub-row',
+      'lesson': 'detail-row lesson-row'
+    };
+    const cls = typeMap[d.type] || 'detail-row';
+    html += `<div class="${cls}">
+      <div class="detail-label">${d.label}</div>
+      <div class="detail-content"><ul>${d.items.map(it => `<li>${it}</li>`).join('')}</ul></div>
+    </div>`;
+  });
+  detailEl.innerHTML = html;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeProject() { overlay.classList.remove('active'); document.body.style.overflow = ''; }
+document.getElementById('detailClose').addEventListener('click', closeProject);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeProject(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProject(); });
+detailPanel.addEventListener('click', e => e.stopPropagation());
+
+// Communication
+const commContainer = document.getElementById('commCards');
+COMMS.forEach(c => {
+  const card = document.createElement('div');
+  card.className = 'comm-card';
+  card.innerHTML = `
+    <span class="comm-card-dept">${c.dept}</span>
+    <div class="comm-card-action">${c.action}</div>
+    <div class="comm-card-result">${c.result}</div>`;
+  commContainer.appendChild(card);
+});
+
+// Skills
+const skillsGrid = document.getElementById('skillsGrid');
+SKILLS.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'skill-card';
+  const worksHtml = s.works.length > 0
+    ? `<div class="skill-works">${s.works.map(w =>
+        `<a class="skill-work-link" href="${w.url}" target="_blank" rel="noopener">${linkSVG} ${w.title}</a>`
+      ).join('')}</div>`
+    : `<div class="skill-no-work">작업물 준비 중</div>`;
+  card.innerHTML = `
+    <div class="skill-name"><div class="skill-icon">${s.icon}</div>${s.name}</div>
+    <p class="skill-desc">${s.desc}</p>
+    ${worksHtml}`;
+  skillsGrid.appendChild(card);
+});
+
+// Fade
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
