@@ -233,9 +233,9 @@
   }
   .timeline-item:not(:first-child) .timeline-dot { background: var(--border); border-color: #fff; }
   .timeline-company { font-size: 1.1rem; font-weight: 700; }
-  .timeline-role { font-size: .88rem; color: var(--accent); font-weight: 600; margin: 2px 0; }
-  .timeline-period { font-size: .82rem; color: var(--text-muted); margin-bottom: 8px; }
-  .timeline-desc { font-size: .9rem; color: var(--text-sub); line-height: 1.75; }
+  .timeline-role { font-size: .78rem; color: var(--accent); font-weight: 600; margin: 2px 0; }
+  .timeline-period { font-size: .62rem; color: var(--text-muted); margin-bottom: 8px; }
+  .timeline-desc { font-size: .8rem; color: var(--text-sub); line-height: 1.75; }
   .timeline-desc ul { list-style: none; padding: 0; }
   .timeline-desc ul li { margin-bottom: 4px; }
   .timeline-desc ul li::before { content: '—'; color: var(--accent); margin-right: 6px; font-weight: 700; }
@@ -249,7 +249,7 @@
   }
   .comm-card:hover { border-color: var(--accent); }
   .comm-card-dept {
-    font-size: .72rem; font-weight: 700; color: var(--accent);
+    font-size: .65rem; font-weight: 700; color: var(--accent);
     background: var(--accent-light); padding: 3px 10px; border-radius: 20px;
     display: inline-block; margin-bottom: 10px; letter-spacing: .5px;
   }
@@ -649,7 +649,7 @@ SKILLS.forEach(s => {
     ? `<div class="skill-works">${s.works.map(w =>
         `<a class="skill-work-link" href="${w.url}" target="_blank" rel="noopener">${linkSVG} ${w.title}</a>`
       ).join('')}</div>`
-    : `<div class="skill-no-work">작업물 준비 중</div>`;
+    : `<div class="skill-no-work">업로드 예정</div>`;
   card.innerHTML = `
     <div class="skill-name"><div class="skill-icon">${s.icon}</div>${s.name}</div>
     <p class="skill-desc">${s.desc}</p>
