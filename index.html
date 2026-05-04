@@ -82,27 +82,27 @@
   section { padding: 80px 24px; }
   .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -.5px; }
   .section-title .accent { color: var(--accent); }
-  .section-sub { font-size: .92rem; color: var(--text-muted); margin-bottom: 48px; }
+  .section-sub { font-size: .92rem; color: var(--text-muted); margin-bottom: 24px; }
   .container { max-width: 960px; margin: 0 auto; }
 
-  /* ========== SERVICE CONTEXT ========== */
-  .context-section { background: var(--bg);}
+  /* ========== SERVICE CONTEXT (now inside projects section) ========== */
   .context-box {
-    background: var(--bg-alt); border-radius: var(--radius); padding: 28px 28px 24px;
-    border-left: 4px solid var(--accent);
+    background: #f0f2f5; border-radius: var(--radius); padding: 24px 24px 20px;
+    border-left: 3px solid var(--accent);
+    margin-bottom: 32px;
   }
   .context-box h4 {
-    font-size: .82rem; font-weight: 700; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px;
+    font-size: .75rem; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px;
   }
   .context-box ul { list-style: none; padding: 0; }
   .context-box ul li {
     font-size: .75rem; color: var(--text-sub); line-height: 1.8;
-    padding-left: 16px; position: relative; margin-bottom: 6px;
+    padding-left: 16px; position: relative; margin-bottom: 4px;
   }
   .context-box ul li::before {
     content: ''; position: absolute; left: 0; top: 11px;
-    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+    width: 5px; height: 5px; background: var(--accent); border-radius: 50%;
   }
 
   /* ========== PROJECTS ========== */
@@ -181,16 +181,6 @@
     font-size: .76rem; color: var(--text-muted); margin-top: 2px; display: block;
   }
 
-  /* — 결과 (headline): biggest */
-  .detail-row.result-row {
-    background: var(--accent-light); border-radius: 10px; border-top: none;
-    padding: 18px 16px; margin-bottom: 6px;
-  }
-  .result-row .detail-label { font-size: .74rem; color: var(--accent); }
-  .result-row .detail-content { font-size: 1rem; font-weight: 500; line-height: 1.85; }
-  .result-row .detail-content strong { font-weight: 700; color: var(--accent); }
-  .result-row .detail-content ul li::before { width: 5px; height: 5px; }
-
   /* — 배경/문제/실행 (body): indented, medium */
   .detail-row.body-row {
     padding: 10px 0 10px 12px; border-top: none;
@@ -199,7 +189,7 @@
   .body-row .detail-label { font-size: .66rem; color: var(--text-muted); margin-bottom: 4px; }
   .body-row .detail-content { font-size: .8rem; line-height: 1.7; }
 
-  /* — 결과 상세 (repeat, smaller than headline) */
+  /* — 결과 상세 */
   .detail-row.result-sub-row {
     background: var(--accent-light); border-radius: 8px; border-top: none;
     padding: 14px 14px; margin-top: 6px; opacity: .88;
@@ -208,7 +198,7 @@
   .result-sub-row .detail-content { font-size: .84rem; font-weight: 500; line-height: 1.75; }
   .result-sub-row .detail-content strong { font-weight: 700; color: var(--accent); }
 
-  /* — 레슨런: smallest, single-line feel */
+  /* — 레슨런: smallest */
   .detail-row.lesson-row {
     background: var(--bg-alt); border-radius: 8px; border-top: none;
     padding: 12px 14px; margin-top: 8px;
@@ -240,7 +230,7 @@
   .timeline-desc ul li { margin-bottom: 4px; }
   .timeline-desc ul li::before { content: '—'; color: var(--accent); margin-right: 6px; font-weight: 700; }
 
-  /* ========== COMMUNICATION — vertical cards ========== */
+  /* ========== COMMUNICATION ========== */
   .comm-section { background: var(--bg-alt); }
   .comm-cards { display: flex; flex-direction: column; gap: 16px; }
   .comm-card {
@@ -308,7 +298,7 @@
     section { padding: 56px 16px; }
     .hero-stats { gap: 24px; }
     .project-detail { padding: 24px 18px; }
-    .context-box { padding: 22px 18px 18px; }
+    .context-box { padding: 20px 16px 16px; }
     .comm-card { padding: 20px 18px 16px; }
   }
 
@@ -336,26 +326,20 @@
   <div class="scroll-hint"><span></span></div>
 </section>
 
-<!-- SERVICE CONTEXT (moved above projects) -->
-<section class="context-section">
-  <div class="container">
-    <div class="context-box fade-up">
-      <h4>블루타이거 서비스 요약</h4>
-      <ul>
-        <li>강의 시청 + 과제 제출 + 실시간 멘토링이 결합된 온라인 교육 서비스</li>
-        <li>연 6회 정기개강 (기수제 운영), 1기수 당 20개 클래스 동시 도입</li>
-        <li>정기개강 1회 당 수강생 약 250명의 참여율 관리, 강사 80명 · 운영 어시스턴트 20명 인력 운영</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
+<!-- PROJECTS (context box now inside) -->
 <section class="projects-section">
   <div class="container">
     <div class="fade-up">
       <p class="section-title"><span class="accent">주요</span> 프로젝트 <span style="font-size:.5em; font-weight:500; color:#888; letter-spacing:0;">· 블루타이거</span></p>
       <p class="section-sub">카드를 클릭하면 상세 내용을 확인할 수 있습니다.</p>
+      <div class="context-box">
+        <h4>블루타이거 서비스 소개</h4>
+        <ul>
+          <li>강의 시청 + 과제 제출 + 실시간 멘토링이 결합된 온라인 교육 서비스</li>
+          <li>연 6회 정기개강 (기수제 운영), 1기수 당 20개 클래스 동시 도입</li>
+          <li>정기개강 1회 당 수강생 약 250명의 참여율 관리, 강사 80명 · 운영 어시스턴트 20명 인력 운영</li>
+        </ul>
+      </div>
     </div>
     <div class="project-cards-grid fade-up" id="projectGrid"></div>
   </div>
@@ -400,7 +384,7 @@
   </div>
 </section>
 
-<!-- COMMUNICATION (moved below career, vertical layout with dept titles) -->
+<!-- COMMUNICATION -->
 <section class="comm-section">
   <div class="container">
     <div class="fade-up">
@@ -520,7 +504,6 @@ const PROJECTS = [
   }
 ];
 
-// ── 커뮤니케이션 역량 (유관부서 타이틀 추가, 수직 나열) ──
 const COMMS = [
   {
     dept: "기획팀",
@@ -539,10 +522,6 @@ const COMMS = [
   }
 ];
 
-/*
-  ✏️ 스킬별 작업물 관리
-  works: [{ title: "작업물명", url: "https://..." }]
-*/
 const SKILLS = [
   {
     icon: "N", name: "Notion",
@@ -638,7 +617,9 @@ SKILLS.forEach(s => {
   const worksHtml = s.works === null
     ? ''
     : s.works.length > 0
-    ? `<div class="skill-works">...`
+    ? `<div class="skill-works">${s.works.map(w =>
+        `<a class="skill-work-link" href="${w.url}" target="_blank" rel="noopener">${linkSVG} ${w.title}</a>`
+      ).join('')}</div>`
     : `<div class="skill-no-work">업로드 예정</div>`;
   card.innerHTML = `
     <div class="skill-name"><div class="skill-icon">${s.icon}</div>${s.name}</div>
