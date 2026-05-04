@@ -564,11 +564,10 @@ const SKILLS = [
     desc: "고객 활용 데이터 수집·분류·모니터링, 행동 데이터 추출",
     works: []
   },
-  {
-    icon: "Co", name: "협업 도구",
-    desc: "Notion, Google Workspace, Zoom, Slack 등 다양한 협업 도구 이용·운영 경험",
-    works: []
-  }
+  { icon: "Co", name: "협업 도구",
+  desc: "Notion, Google Workspace, Zoom, Slack 등...",
+  works: null
+}
 ];
 
 
@@ -645,11 +644,11 @@ const skillsGrid = document.getElementById('skillsGrid');
 SKILLS.forEach(s => {
   const card = document.createElement('div');
   card.className = 'skill-card';
-  const worksHtml = s.works.length > 0
-    ? `<div class="skill-works">${s.works.map(w =>
-        `<a class="skill-work-link" href="${w.url}" target="_blank" rel="noopener">${linkSVG} ${w.title}</a>`
-      ).join('')}</div>`
-    : `<div class="skill-no-work">업로드 예정</div>`;
+  const worksHtml = s.works === null
+    ? ''
+    : s.works.length > 0
+    ? `<div class="skill-works">...`
+    : `<div class="skill-no-work">작업물 준비 중</div>`;
   card.innerHTML = `
     <div class="skill-name"><div class="skill-icon">${s.icon}</div>${s.name}</div>
     <p class="skill-desc">${s.desc}</p>
