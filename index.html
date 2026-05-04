@@ -34,17 +34,17 @@
   /* ========== HERO ========== */
   .hero {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: var(--bg-dark); position: relative; overflow: hidden;
+    background: var(#005eea); position: relative; overflow: hidden;
   }
   .hero::before {
     content: ''; position: absolute; width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(0,94,234,.25) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,) 0%, transparent 70%);
     top: -100px; right: -100px; border-radius: 50%;
     animation: float 8s ease-in-out infinite alternate;
   }
   .hero::after {
     content: ''; position: absolute; width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,94,234,.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,) 0%, transparent 70%);
     bottom: -80px; left: -60px; border-radius: 50%;
     animation: float 10s ease-in-out infinite alternate-reverse;
   }
@@ -57,16 +57,16 @@
     letter-spacing: -1px; margin-bottom: 8px;
   }
   .hero-role {
-    font-size: 1.1rem; font-weight: 600; color: var(--accent);
+    font-size: 1.1rem; font-weight: 600; color: var(#fff);
     letter-spacing: 4px; text-transform: uppercase; margin-bottom: 28px;
   }
   .hero-desc { font-size: 1.05rem; color: rgba(255,255,255,.72); line-height: 1.9; }
-  .hero-desc .em { color: var(--accent); font-weight: 700; }
+  .hero-desc .em { color: var(#fff); font-weight: 700; }
   .hero-stats {
     margin-top: 48px; display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
   }
-  .hero-stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
-  .hero-stat-label { font-size: .82rem; color: rgba(255,255,255,.5); margin-top: 2px; }
+  .hero-stat-num { font-size: 2rem; font-weight: 800; color: var(#fff); }
+  .hero-stat-label { font-size: .82rem; color: rgba(255,255,255,.6); margin-top: 2px; }
   .scroll-hint {
     position: absolute; bottom: 32px; left: 50%;
     transform: translateX(-50%); z-index: 2; animation: bounce 2s infinite;
